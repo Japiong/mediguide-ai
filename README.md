@@ -222,12 +222,21 @@ Tests cover:
 
 ### Frontend → Vercel
 
+This repository is a monorepo. Vercel is configured to build the app from the `client/` directory.
+
+```bash
+# From the repo root
+npx vercel --prod
+```
+
+Set the following environment variable in the Vercel dashboard:
+- `NEXT_PUBLIC_API_URL = https://your-backend-url`
+
+If you prefer, you can also deploy directly from the `client/` folder:
+
 ```bash
 cd client
-npx vercel
-
-# Set environment variables in Vercel dashboard:
-# NEXT_PUBLIC_API_URL = https://your-backend.railway.app
+npx vercel --prod
 ```
 
 ### Backend → Railway / Render

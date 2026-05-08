@@ -100,10 +100,20 @@ POST /api/ai/chat                   — AI health chat
 ## Deployment
 
 ### Vercel (Frontend)
+This monorepo is configured to deploy the Next.js app from `client/`.
+
+```bash
+# From repo root
+npx vercel --prod
+```
+
+Set `NEXT_PUBLIC_API_URL` in the Vercel dashboard to your backend URL.
+
+If you want, you can also deploy directly from the `client/` directory:
+
 ```bash
 cd client
 npx vercel --prod
-# Set NEXT_PUBLIC_API_URL to your backend URL
 ```
 
 ### Railway (Backend + Database)

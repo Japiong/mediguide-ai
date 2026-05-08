@@ -1,0 +1,12 @@
+# Ignore backend and repo artifacts for Vercel frontend deploys
+server/
+database/
+README.md
+SETUP.md
+*.log
+node_modules/
+client/node_modules/
+server/node_modules/
+client/.next/
+server/.next/
+.vercel/
