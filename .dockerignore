@@ -1,0 +1,13 @@
+node_modules
+client/node_modules
+server/node_modules
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnp.*
+.env*
+.git
+.gitignore
+docker-compose.yml
+*/Dockerfile
+README.md

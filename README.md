@@ -155,7 +155,22 @@ Frontend runs at **http://localhost:3000**
 
 ---
 
-## 🔌 API Reference
+## � Deploying on Railway
+
+This repository now includes a root `Dockerfile` for Railway deployment.
+
+1. Create a Railway project and add a PostgreSQL plugin.
+2. Set these environment variables in Railway:
+   - `DATABASE_URL` (provided by Railway Postgres)
+   - `GITHUB_TOKEN` (your GitHub inference token)
+   - `CLIENT_URL` set to your Railway deployment URL, e.g. `https://your-app.railway.app`
+3. Deploy using Railway's Docker deployment flow.
+
+The container starts the Next.js frontend on Railway's assigned `PORT`, while API requests to `/api/*` are proxied internally to the Express backend at `http://127.0.0.1:5000`.
+
+---
+
+## �🔌 API Reference
 
 ### Search
 ```
