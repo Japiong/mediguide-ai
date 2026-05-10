@@ -8,25 +8,42 @@ const pool = new Pool({
   connectionTimeoutMillis: 2000,
 });
 
+let isConnected = false;
+
 pool.on('error', (err) => {
-  console.error('Unexpected database error:', err);
-  // Keep the API alive in development so non-DB routes (e.g. AI chat) still work.
-  // Process termination here can cause nodemon crash loops after transient DB issues.
-  if (process.env.NODE_ENV === 'production') {
-    process.exit(-1);
-  }
+  console.error('❌ Database error:', err.message);
+  isConnected = false;
 });
 
-// Test connection on startup
-pool.connect()
-  .then(client => {
+pool.on('connect', () => {
+  isConnected = true;
+  console.log('✅ PostgreSQL connected');
+});
+
+// Test connection on startup (non-blocking)
+const testConnection = async () => {
+  try {
+    const client = await pool.connect();
+    isConnected = true;
     console.log('✅ PostgreSQL connected');
     client.release();
-  })
-  .catch(err => {
-    console.error('❌ PostgreSQL connection error:', err.message);
-  });
+  } catch (err) {
+    console.warn('⚠️  PostgreSQL connection failed:', err.message);
+    console.warn('⚠️  Retrying in 5 seconds...');
+    isConnected = false;
+    // Retry after 5 seconds
+    setTimeout(testConnection, 5000);
+  }
+};
 
-const query = (text, params) => pool.query(text, params);
+// Start connection test but don't block startup
+testConnection();
 
-module.exports = { query, pool };
+const query = (text, params) => {
+  if (!isConnected) {
+    console.warn('⚠️  Database not connected, attempting query anyway...');
+  }
+  return pool.query(text, params);
+};
+
+module.exports = { query, pool, isConnected: () => isConnected };
