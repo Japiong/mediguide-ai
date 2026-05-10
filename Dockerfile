@@ -1,11 +1,11 @@
 FROM node:20-alpine AS server-deps
 WORKDIR /app/server
-COPY server/package.json server/package-lock.json ./
-RUN npm ci --only=production
+COPY server/package*.json ./
+RUN npm install --only=production
 
 FROM node:20-alpine AS client-builder
 WORKDIR /app/client
-COPY client/package.json client/package-lock.json ./
+COPY client/package*.json ./
 RUN npm install
 COPY client ./
 ARG NEXT_PUBLIC_API_URL=http://127.0.0.1:5000
